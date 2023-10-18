@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "orthancsv": {
+      "commandName": "Project",
+      "commandLineArgs": "CT"
+    }
+  }
+}
