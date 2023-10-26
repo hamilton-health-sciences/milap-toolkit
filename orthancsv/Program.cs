@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Data;
 using System.Globalization;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -11,7 +10,8 @@ using HttpClient client = new();
 
 List<string> studyIds;
 
-if(args.Length is 0 or > 1) {
+if(args.Length is 0 or > 1) 
+{
     Console.WriteLine("Invalid number of arguments");
     return;
 }
@@ -48,6 +48,7 @@ else
     foreach (var studyId in studyIds)
     {
         currentStudyCount++;
+
         Console.WriteLine($"Processing {currentStudyCount}/{totalStudies}, studyId: {studyId}");
 
         try
@@ -66,11 +67,11 @@ else
     }
 
     Console.WriteLine("Writing to csv");
+
     await csv.WriteRecordsAsync(studyCsvs);
+
     Console.WriteLine($"csv ready at {targetCsv}");
 }
-
-
 
 
 static async Task<List<string>> RetrieveStudyIdsByModality(HttpClient client, string modality)
@@ -85,6 +86,8 @@ static async Task<List<string>> RetrieveStudyIdsByModality(HttpClient client, st
     };
 
     var response = await client.PostAsJsonAsync("http://localhost:8042/tools/find", studyLevelQuery);
+
     var studyIds = await JsonSerializer.DeserializeAsync<List<string>>(await response.Content.ReadAsStreamAsync());
+
     return studyIds;
 }
