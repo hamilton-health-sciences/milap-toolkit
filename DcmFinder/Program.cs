@@ -3,20 +3,33 @@
 using DcmFinder;
 using FellowOakDicom;
 
+var appArguments = Util.ParseApplicationArguments(args);
+
+if (appArguments.IsInvalid)
+{
+    Console.WriteLine($"Invalid Argument(s) : {args}");
+    return;
+}
+
 try
 {
-    foreach (var file in Directory.EnumerateFiles("c:\\target\\target1"))
+    foreach (var file in Directory.EnumerateFiles(appArguments.DicomDirectory))
     {
-
         if (DicomFile.HasValidHeader(file))
         {
             var dicomFile = DicomFile.Open(file);
 
-            var sopInstanceUID = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID);
+            var sopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID);
 
-            Console.WriteLine(sopInstanceUID == "2.25.68458751207555755306905863337134582389" ? $"Filepath: {file} : SopInstanceUID: {sopInstanceUID}" : $"Unable to find file with SopInstanceUID of {sopInstanceUID}");
+            if (sopInstanceUid == appArguments.SopInstanceUid)
+            {
+                Console.WriteLine($"Filepath: {file} : SopInstanceUID: {sopInstanceUid}");
+                return;
+            }
         }
     }
+
+    Console.WriteLine($"Unable to locale file with the following SopInstanceUid: {appArguments.SopInstanceUid}");
 }
 catch (Exception ex)
 {

@@ -5,13 +5,15 @@ public static class Util
     public static ApplicationArgument ParseApplicationArguments(string[] args)
     {
         var applicationArgument = new ApplicationArgument();
-        
-        Console.WriteLine(args);
 
         if (args.Length != 2)
         {
-            Console.WriteLine("Invalid number of arguments");
-        } 
+            return applicationArgument;
+        }
+
+        applicationArgument.DicomDirectory = args.Where(arg => arg.ToLowerInvariant().StartsWith(ApplicationConstant.DcmDir)).Select(arg => arg.Split("=")[1]).FirstOrDefault();
+        applicationArgument.SopInstanceUid = args.Where(arg => arg.ToLowerInvariant().StartsWith(ApplicationConstant.SopUid)).Select(arg => arg.Split("=")[1]).FirstOrDefault();
+        applicationArgument.SopInstanceUidCsv = args.Where(arg => arg.ToLowerInvariant().StartsWith(ApplicationConstant.SopUidCsv)).Select(arg => arg.Split("=")[1]).FirstOrDefault();
 
         return applicationArgument;
     }

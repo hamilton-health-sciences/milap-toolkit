@@ -2,12 +2,9 @@
 {
     public class ApplicationArgument
     {
-        public ApplicationArgument()
-        {
-            this.SopInstanceUid = new List<string>();
-        }
-        public string? Directory { get; set; }
-        public List<string> SopInstanceUid { get; set; }
-        public bool IsValid => this.Directory != null && !this.SopInstanceUid.Any();
+        public string? DicomDirectory { get; set; }
+        public string? SopInstanceUidCsv { get; set; }
+        public string? SopInstanceUid { get; set; }
+        public bool IsInvalid => string.IsNullOrWhiteSpace(this.DicomDirectory) || (string.IsNullOrWhiteSpace(this.SopInstanceUidCsv) && string.IsNullOrWhiteSpace(this.SopInstanceUid));
     }
 }
