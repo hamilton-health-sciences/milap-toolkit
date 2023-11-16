@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DcmFinder", "DcmFinder\DcmFinder.csproj", "{44D67B89-4ADE-4D44-B34D-9C8E3647421D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orthancsv", "Orthancsv\Orthancsv.csproj", "{726375BA-110C-4449-B5E8-5823D8F436FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orthancsvs", "Orthancsv\Orthancsvs.csproj", "{726375BA-110C-4449-B5E8-5823D8F436FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
