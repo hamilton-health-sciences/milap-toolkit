@@ -29,7 +29,7 @@ try
         }
     }
 
-    Console.WriteLine($"Unable to locale file with the following SopInstanceUid: {appArguments.SopInstanceUid}");
+    Console.WriteLine($"Unable to locate file with the following SopInstanceUid: {appArguments.SopInstanceUid}");
 }
 catch (Exception ex)
 {
