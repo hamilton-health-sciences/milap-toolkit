@@ -1,4 +1,4 @@
-﻿namespace DcmFinder
+﻿namespace DcmFinder.DicomFinder
 {
     public class DicomFinder : IDicomFinder
     {
