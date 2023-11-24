@@ -1,4 +1,6 @@
-﻿using FellowOakDicom;
+﻿using System.Diagnostics;
+using System.Reflection;
+using FellowOakDicom;
 
 namespace DcmFinder.DicomFinder
 {
@@ -6,11 +8,13 @@ namespace DcmFinder.DicomFinder
     {
         public string FindFilenameBySopInstanceUid(string sopUid, string directory)
         {
-            var fileName = "";
+            var filePath = "";
 
             try
             {
-                foreach (var file in Directory.EnumerateFiles(directory))
+                var fileList = Directory.GetFiles(directory, "*.dcm", SearchOption.AllDirectories).ToList();
+
+                foreach (var file in fileList)
                 {
                     if (DicomFile.HasValidHeader(file))
                     {
@@ -20,13 +24,19 @@ namespace DcmFinder.DicomFinder
 
                         if (sopInstanceUid == sopUid)
                         {
-                            fileName = file;
+                            filePath = file;
                             Console.WriteLine($"Filepath: {file} : SopInstanceUID: {sopInstanceUid}");
                             break;
                         }
                     }
                 }
                 
+                // open the file automatically
+                
+                // Process.Start(new ProcessStartInfo { FileName = fileName, UseShellExecute = true });
+
+                return Path.GetFileName(filePath);
+
             }
             catch (Exception ex)
             {
@@ -34,7 +44,7 @@ namespace DcmFinder.DicomFinder
                 throw new NotImplementedException();
             }
 
-            return fileName.Remove(0,directory.Length + 1);
+           
         }
 
         public void WriteFilenameBySopInstanceUid(string pathToCsv, string directory)
