@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using DcmFinder;
+using DcmFinder.DicomFinder;
 using FellowOakDicom;
 
 var appArguments = Util.ParseApplicationArguments(args);
@@ -11,30 +12,12 @@ if (appArguments.IsInvalid)
     return;
 }
 
-try
-{
-    foreach (var file in Directory.EnumerateFiles(appArguments.DicomDirectory))
-    {
-        if (DicomFile.HasValidHeader(file))
-        {
-            var dicomFile = DicomFile.Open(file);
 
-            var sopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID);
+var dicomFinder = new DicomFinder();
 
-            if (sopInstanceUid == appArguments.SopInstanceUid)
-            {
-                Console.WriteLine($"Filepath: {file} : SopInstanceUID: {sopInstanceUid}");
-                return;
-            }
-        }
-    }
+var fileName = dicomFinder.FindFilenameBySopInstanceUid(appArguments.SopInstanceUid!, appArguments.DicomDirectory!);
 
-    Console.WriteLine($"Unable to locate file with the following SopInstanceUid: {appArguments.SopInstanceUid}");
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Unable to enumerate directory:  {ex.Message}");
-}
+Console.WriteLine($"file name is {fileName}");
 
 
 
