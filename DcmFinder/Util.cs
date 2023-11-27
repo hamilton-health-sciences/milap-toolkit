@@ -1,5 +1,8 @@
 ﻿namespace DcmFinder;
 
+/// <summary>
+/// The Util class
+/// </summary>
 public static class Util
 {
     public static ApplicationArgument ParseApplicationArguments(string[] args)
