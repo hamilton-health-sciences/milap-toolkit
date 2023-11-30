@@ -17,7 +17,8 @@ var dicomFinder = new DicomFinder();
 
 var fileName = dicomFinder.FindFilenameBySopInstanceUid(appArguments.SopInstanceUid!, appArguments.DicomDirectory!);
 
-Console.WriteLine($"file name is {fileName}");
+Console.WriteLine(fileName == null ? "File name is not found" : $"file name is {fileName}");
+
 
 
 

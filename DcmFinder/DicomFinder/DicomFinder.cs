@@ -16,18 +16,19 @@ namespace DcmFinder.DicomFinder
 
                 foreach (var file in fileList)
                 {
-                    if (DicomFile.HasValidHeader(file))
+                    if (!DicomFile.HasValidHeader(file)) continue;
+
+                    var dicomFile = DicomFile.Open(file);
+
+                    var sopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID);
+                    //var modality = dicomFile.Dataset.GetString(DicomTag.Modality);
+
+                    if (sopInstanceUid == sopUid)
                     {
-                        var dicomFile = DicomFile.Open(file);
-
-                        var sopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID);
-
-                        if (sopInstanceUid == sopUid)
-                        {
-                            filePath = file;
-                            Console.WriteLine($"Filepath: {file} : SopInstanceUID: {sopInstanceUid}");
-                            break;
-                        }
+                        filePath = file;
+                        //Console.WriteLine($"Modality: {modality}");
+                        Console.WriteLine($"Filepath: {file} : SopInstanceUID: {sopInstanceUid}");
+                        break;
                     }
                 }
                 
