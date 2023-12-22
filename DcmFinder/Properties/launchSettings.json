@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DcmFinder": {
+      "commandName": "Project",
+      "commandLineArgs": "dcmdir=C:\\\\ctp2\\\\CTP\\\\roots\\\\FileStorageService sopuidcsv=C:\\csv\\sop.csv"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using DcmFinder;
-using FellowOakDicom;
+using DcmFinder.DicomFinder;
 
 var appArguments = Util.ParseApplicationArguments(args);
 
@@ -11,30 +11,32 @@ if (appArguments.IsInvalid)
     return;
 }
 
-try
+var dicomFinder = new DicomFinder();
+
+if (appArguments.SopInstanceUidCsv != null)
 {
-    foreach (var file in Directory.EnumerateFiles(appArguments.DicomDirectory))
+    if (!File.Exists(appArguments.SopInstanceUidCsv))
     {
-        if (DicomFile.HasValidHeader(file))
-        {
-            var dicomFile = DicomFile.Open(file);
-
-            var sopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID);
-
-            if (sopInstanceUid == appArguments.SopInstanceUid)
-            {
-                Console.WriteLine($"Filepath: {file} : SopInstanceUID: {sopInstanceUid}");
-                return;
-            }
-        }
+        Console.WriteLine($"File not found : {appArguments.SopInstanceUidCsv}");
+        return;
     }
 
-    Console.WriteLine($"Unable to locale file with the following SopInstanceUid: {appArguments.SopInstanceUid}");
+    dicomFinder.WriteFilePathBySopInstanceUid("C:\\csv\\sop.csv", "C:\\ctp2\\CTP\\roots\\FileStorageService");
+    Console.WriteLine("csv population complete");
 }
-catch (Exception ex)
+else
 {
-    Console.WriteLine($"Unable to enumerate directory:  {ex.Message}");
+    var filePath = dicomFinder.FindFilenameBySopInstanceUid(appArguments.SopInstanceUid!, appArguments.DicomDirectory!);
+    Console.WriteLine(filePath == null ? "File not found" : $"path to file is: {filePath}");
 }
+
+
+
+
+
+
+
+
 
 
 
