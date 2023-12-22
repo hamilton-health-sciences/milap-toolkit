@@ -49,7 +49,12 @@ namespace DcmFinder.DicomFinder
            
         }
 
-        public void WriteFilenameBySopInstanceUid(string pathToCsv, string directory)
+        /// <summary>
+        /// Writes full file path of given sop instance uid to CSV
+        /// </summary>
+        /// <param name="pathToCsv"></param>
+        /// <param name="directory"></param>
+        public void WriteFilePathBySopInstanceUid(string pathToCsv, string directory)
         {
             List<FilePathCsv> records;
 
@@ -81,8 +86,6 @@ namespace DcmFinder.DicomFinder
                 csvWriter.NextRecord();
                 csvWriter.WriteRecords(records);
             }
-
-            Console.WriteLine("csv population complete");
         }
     }
 
