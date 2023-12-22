@@ -2,7 +2,7 @@
   "profiles": {
     "DcmFinder": {
       "commandName": "Project",
-      "commandLineArgs": "dcmdir=c:\\\\target\\\\target1 sopuid=2.25.68458751207555755306905863337134582389"
+      "commandLineArgs": "dcmdir=C:\\\\ctp2\\\\CTP\\\\roots\\\\FileStorageService sopuidcsv=C:\\csv\\sop.csv"
     }
   }
 }

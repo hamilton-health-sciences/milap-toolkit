@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
+using CsvHelper;
+using DcmFinder.Models;
 using FellowOakDicom;
 
 namespace DcmFinder.DicomFinder
@@ -21,12 +24,10 @@ namespace DcmFinder.DicomFinder
                     var dicomFile = DicomFile.Open(file);
 
                     var sopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID);
-                    //var modality = dicomFile.Dataset.GetString(DicomTag.Modality);
 
-                    if (sopInstanceUid == sopUid)
+                    if (sopInstanceUid == sopUid.Trim())
                     {
                         filePath = file;
-                        //Console.WriteLine($"Modality: {modality}");
                         Console.WriteLine($"Filepath: {file} : SopInstanceUID: {sopInstanceUid}");
                         break;
                     }
@@ -36,7 +37,7 @@ namespace DcmFinder.DicomFinder
                 
                 // Process.Start(new ProcessStartInfo { FileName = fileName, UseShellExecute = true });
 
-                return Path.GetFileName(filePath);
+                return Path.GetFullPath(filePath);
 
             }
             catch (Exception ex)
@@ -48,9 +49,43 @@ namespace DcmFinder.DicomFinder
            
         }
 
-        public void WriteFilenameBySopInstanceUid(string pathToCsv, string directory)
+        /// <summary>
+        /// Writes full file path of given sop instance uid to CSV
+        /// </summary>
+        /// <param name="pathToCsv"></param>
+        /// <param name="directory"></param>
+        public void WriteFilePathBySopInstanceUid(string pathToCsv, string directory)
         {
-            throw new NotImplementedException();
+            List<FilePathCsv> records;
+
+            using (var reader = new StreamReader(pathToCsv))
+            using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                csvReader.Context.RegisterClassMap<FilePathCsvMap>();
+
+                records = csvReader.GetRecords<FilePathCsv>().ToList();
+
+                Console.WriteLine($"Total records : {records?.Count()}");
+
+                foreach (var record in records)
+                {
+                    var filePath = this.FindFilenameBySopInstanceUid(record.SopInstanceUid, directory) ?? string.Empty;
+
+                    record.FilePath = filePath;
+                }
+            }
+
+            using (var writer = new StreamWriter(pathToCsv))
+            using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csvWriter.Context.RegisterClassMap<FilePathCsvMap>();
+
+                Console.WriteLine("Initiating population of csv");
+
+                csvWriter.WriteHeader<FilePathCsv>();
+                csvWriter.NextRecord();
+                csvWriter.WriteRecords(records);
+            }
         }
     }
 
